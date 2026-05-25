@@ -66,11 +66,13 @@
     "solutionStorageAccountName":            { "value": null },
 
     "vmAdminPassword":                       {"value": "$(secretOrRandomPassword)"},  
-    "vmSize":                                { "value": "Standard_D8s_v5" },
+    "vmSize":                                { "value": "Standard_D8s_v6" },
 
     "useCMK":                                { "value": "false" },
     "useExistingVNet":                       { "value": "${USE_EXISTING_VNET}" },  
-    "deploySubnets":                         { "value": "${DEPLOY_SUBNETS}" },  
+    "deploySubnets":                         { "value": "${DEPLOY_SUBNETS}" },
+    "acaEnvSubnetName":                      { "value": "aca-env-subnet" },
+    "acaEnvSubnetPrefix":                    { "value": "192.168.4.0/23" },  
     "sideBySideDeploy":                      { "value": "${SIDE_BY_SIDE}" }, 
     "existingVnetResourceId":                { "value": "${EXISTING_VNET_RESOURCE_ID}" },     
 

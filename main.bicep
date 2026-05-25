@@ -96,6 +96,7 @@ param azureAppGatewaySubnetName string = 'AppGatewaySubnet'
 param jumpboxSubnetName string = 'jumpbox-subnet'
 param acaEnvironmentSubnetName string = 'aca-environment-subnet'
 param devopsBuildAgentsSubnetName string = 'devops-build-agents-subnet'
+param acaEnvSubnetName string = 'aca-env-subnet'
 
 @description('Address prefixes for the virtual network.')
 param vnetAddressPrefixes array = [
@@ -133,6 +134,9 @@ param jumpboxSubnetPrefix string = '192.168.3.64/27' // 192.168.3.64–192.168.3
 
 @description('DevOps Build Agents subnet — /27 (32 IPs)')
 param devopsBuildAgentsSubnetPrefix string = '192.168.3.96/27' // 192.168.3.96–192.168.3.127
+
+@description('ACA Environment subnet for consumer workloads — /23 (512 IPs)')
+param acaEnvSubnetPrefix string = '192.168.4.0/23' // 192.168.4.0–192.168.5.255
 
 // ----------------------------------------------------------------------
 // Feature-flagging Params (as booleans with a default of true)
@@ -518,6 +522,14 @@ var baseSubnets = [
         addressPrefix: devopsBuildAgentsSubnetPrefix 
         delegation: ''
         serviceEndpoints : []
+      }
+      {
+        name: acaEnvSubnetName
+        addressPrefix: acaEnvSubnetPrefix
+        delegation: 'Microsoft.app/environments'
+        serviceEndpoints: [
+          'Microsoft.AzureCosmosDB'
+        ]
       }
 ]
 
@@ -1458,7 +1470,7 @@ module aiFoundry 'modules/ai-foundry/main.bicep' = if (deployAiFoundry) {
     // Required
     baseName: substring(resourceToken, 0, 10)
 
-    includeAssociatedResources: true
+    includeAssociatedResources: false
     location: location
     tags: deploymentTags
 
@@ -2019,7 +2031,7 @@ module cosmosDBAccount 'br/public:avm/res/document-db/database-account:0.15.1' =
     ]
     defaultConsistencyLevel: 'Session'
     capabilitiesToAdd: ['EnableServerless']
-    enableAnalyticalStorage: true
+    enableAnalyticalStorage: false
     enableFreeTier: false
     networkRestrictions: {
       publicNetworkAccess: _networkIsolation ? 'Disabled' : 'Enabled'

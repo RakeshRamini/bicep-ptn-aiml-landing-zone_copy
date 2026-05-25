@@ -51,7 +51,7 @@ param enableTelemetry bool = true
 // Deploy AVM AI Foundry Module
 // ---------------------------------------------------------------------
 
-module aiFoundryAvm 'br/public:avm/ptn/ai-ml/ai-foundry:0.6.0' = {
+module aiFoundryAvm 'br/public:avm/ptn/ai-ml/ai-foundry:0.7.0' = {
   name: 'aiFoundryAvm-${baseName}'
   params: {
     baseName: baseName
